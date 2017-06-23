@@ -12,8 +12,7 @@
         <router-link to="/seller">商家</router-link>
       </li>
     </ul>
-    <router-view>
-      123123
+    <router-view :seller="seller">
     </router-view>
   </div>
 </template>

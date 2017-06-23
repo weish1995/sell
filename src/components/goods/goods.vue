@@ -30,17 +30,23 @@
                   <span class="now">￥{{ food.price }}</span>
                   <del class="old" v-if="food.oldPrice">￥{{ food.oldPrice }}</del>
                 </div>
+                <div class="cartcontrol-wrapper">
+                  <v-cartcontrol :food="food"></v-cartcontrol>
+                </div>
               </div>
             </li>
           </ul>
         </li>
       </ul>
     </div>
+    <v-shopcar :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></v-shopcar>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll';
+  import shopcar from 'components/shopcar/shopcar';
+  import cartcontrol from 'components/cartcontrol/cartcontrol';
 
   const ERR_OK = 0;
 
@@ -71,6 +77,10 @@
         return 0;
       }
     },
+    components: {
+      'v-shopcar': shopcar,
+      'v-cartcontrol': cartcontrol
+    },
     created() {
       this.$http.get('/api/goods').then((response) => {
         response = response.body;
@@ -90,7 +100,8 @@
           click: true
         });
         this.foodsScroll = new BScroll(this.$refs.foods, {
-          probeType: 3
+          probeType: 3,
+          click: true
         });
 
         // 实时监听scroll
@@ -269,6 +280,12 @@
               font-size: 10px;
               color: rgb(147, 153, 159);
             }
+          }
+
+          .cartcontrol-wrapper {
+            position: absolute;
+            right: 0;
+            bottom: 12px;
           }
         }
       }
