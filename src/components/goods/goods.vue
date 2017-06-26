@@ -15,7 +15,7 @@
         <li v-for="item in goods" class="food-list foods-list-hook">
           <h3 class="title">{{ item.name }}</h3>
           <ul>
-            <li v-for="food in item.foods" class="food-item border-1px">
+            <li @click="selectFood(food, $event)" v-for="food in item.foods" class="food-item border-1px">
               <div class="icon">
                 <img width="57" height="57" :src="food.icon">
               </div>
@@ -26,10 +26,7 @@
                   <span class="count">月售{{ food.sellCount }}</span>
                   <span>好评率{{ food.rating }}%</span>
                 </div>
-                <div class="price">
-                  <span class="now">￥{{ food.price }}</span>
-                  <del class="old" v-if="food.oldPrice">￥{{ food.oldPrice }}</del>
-                </div>
+                <v-price :food="food"></v-price>
                 <div class="cartcontrol-wrapper">
                   <v-cartcontrol :food="food" @cart="cartAdd"></v-cartcontrol>
                 </div>
@@ -41,6 +38,7 @@
     </div>
     <v-shopcar ref="shopcart" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"
                :select-foods="selectFoods"></v-shopcar>
+    <v-food :food="sFood" ref="selFood"></v-food>
   </div>
 </template>
 
@@ -48,6 +46,8 @@
   import BScroll from 'better-scroll';
   import shopcar from 'components/shopcar/shopcar';
   import cartcontrol from 'components/cartcontrol/cartcontrol';
+  import foodC from 'components/food/food';
+  import price from 'components/price/price';
 
   const ERR_OK = 0;
 
@@ -61,7 +61,8 @@
       return {
         goods: {},
         listHeight: [],
-        scrollY: 0
+        scrollY: 0,
+        sFood: {}
       };
     },
     computed: {
@@ -101,7 +102,9 @@
     },
     components: {
       'v-shopcar': shopcar,
-      'v-cartcontrol': cartcontrol
+      'v-cartcontrol': cartcontrol,
+      'v-food': foodC,
+      'v-price': price
     },
     created() {
       this.$http.get('/api/goods').then((response) => {
@@ -156,6 +159,14 @@
         this.$nextTick(() => {
           this.$refs.shopcart.drop(e);
         });
+      },
+      selectFood(food, event) {
+        if (!event._constructed) {
+          return;
+        }
+
+        this.sFood = food;
+        this.$refs.selFood.show();
       }
     }
   };
@@ -291,22 +302,6 @@
           .extra {
             .count {
               font-size: 10px;
-            }
-          }
-
-          .price {
-            font-weight: 700;
-            line-height: 24px;
-
-            .now {
-              margin-right: 8px;
-              font-size: 14px;
-              color: rgb(240, 20, 20);
-            }
-
-            .old {
-              font-size: 10px;
-              color: rgb(147, 153, 159);
             }
           }
 
