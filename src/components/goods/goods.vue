@@ -31,7 +31,7 @@
                   <del class="old" v-if="food.oldPrice">￥{{ food.oldPrice }}</del>
                 </div>
                 <div class="cartcontrol-wrapper">
-                  <v-cartcontrol :food="food"></v-cartcontrol>
+                  <v-cartcontrol :food="food" @cart="cartAdd"></v-cartcontrol>
                 </div>
               </div>
             </li>
@@ -39,7 +39,8 @@
         </li>
       </ul>
     </div>
-    <v-shopcar :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></v-shopcar>
+    <v-shopcar ref="shopcart" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"
+               :select-foods="selectFoods"></v-shopcar>
   </div>
 </template>
 
@@ -75,6 +76,27 @@
         }
 
         return 0;
+      },
+      selectFoods() {
+        let foods = [];
+        let sign = false;
+
+        for (let key in this.goods) {
+          sign = true;
+          break;
+        }
+
+        if (sign) {
+          this.goods.forEach((good) => {
+            good.foods.forEach((food) => {
+              if (food.count) {
+                foods.push(food);
+              }
+            });
+          });
+        }
+
+        return foods;
       }
     },
     components: {
@@ -128,6 +150,12 @@
         let foodList = this.$refs.foods.getElementsByClassName('foods-list-hook');
         let ref = foodList[index];
         this.foodsScroll.scrollToElement(ref, 300);
+      },
+      cartAdd(e) {
+        // 体验优化，异步执行下落动画
+        this.$nextTick(() => {
+          this.$refs.shopcart.drop(e);
+        });
       }
     }
   };
@@ -140,7 +168,7 @@
     display: flex;
     overflow: hidden;
     position: absolute;
-    top: 174px;
+    top: 175px;
     bottom: 46px;
     width: 100%;
 
