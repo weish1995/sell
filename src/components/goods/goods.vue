@@ -38,7 +38,7 @@
     </div>
     <v-shopcar ref="shopcart" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"
                :select-foods="selectFoods"></v-shopcar>
-    <v-food :food="sFood" ref="selFood"></v-food>
+    <v-food @cart="cartA" :food="sFood" ref="selFood"></v-food>
   </div>
 </template>
 
@@ -155,6 +155,12 @@
         this.foodsScroll.scrollToElement(ref, 300);
       },
       cartAdd(e) {
+        // 体验优化，异步执行下落动画
+        this.$nextTick(() => {
+          this.$refs.shopcart.drop(e);
+        });
+      },
+      cartA(e) {
         // 体验优化，异步执行下落动画
         this.$nextTick(() => {
           this.$refs.shopcart.drop(e);

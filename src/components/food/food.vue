@@ -15,13 +15,28 @@
             <span class="rating">好评率{{ food.rating }}%</span>
             <v-price :food="food"></v-price>
           </div>
+          <div class="cartcontrol-wrapper">
+            <v-cartcontrol @cart="cartAdd" :food="food"></v-cartcontrol>
+          </div>
+          <transition name="fade">
+            <div class="buy" v-show="!food.count || food.count===0" @click.stop.prevent="addFirst($event)">加入购物车</div>
+          </transition>
         </div>
-        <div class="cartcontrol-wrapper">
-          <v-cartcontrol :food="food"></v-cartcontrol>
-        </div>
-        <transition name="fade">
-          <div class="buy" v-show="!food.count || food.count===0" @click="addFirst($event)">加入购物车</div>
-        </transition>
+      </div>
+      <v-split v-if="food.info"></v-split>
+      <div class="info" v-if="food.info">
+        <h1 class="title">商品信息</h1>
+        <p class="text">{{ food.info }}</p>
+      </div>
+      <div>
+        <br>1
+        <br>1
+        <br>1
+        <br>1
+        <br>1
+        <br>1
+        <br>1
+        <br>1
       </div>
     </div>
   </transition>
@@ -31,6 +46,7 @@
   import BScroll from 'better-scroll';
   import Vue from 'vue';
   import price from 'components/price/price';
+  import split from 'components/split/split';
   import cartcontrol from 'components/cartcontrol/cartcontrol';
 
   export default {
@@ -46,7 +62,8 @@
     },
     components: {
       'v-price': price,
-      'v-cartcontrol': cartcontrol
+      'v-cartcontrol': cartcontrol,
+      'v-split': split
     },
     methods: {
       show() {
@@ -66,10 +83,14 @@
       },
       addFirst(event) {
         if (!event._constructed) {
-            return;
+          return;
         }
 
         Vue.set(this.food, 'count', 1);
+        this.$emit('cart', event.target);
+      },
+      cartAdd(event) {
+        this.$emit('cart', event);
       }
     }
   };
@@ -125,6 +146,7 @@
     }
 
     .content {
+      position: relative;
       padding: 18px;
 
       .title {
@@ -151,33 +173,50 @@
           margin-right: 12px;
         }
       }
+
+      .cartcontrol-wrapper {
+        position: absolute;
+        right: 12px;
+        bottom: 12px;
+      }
+
+      .buy {
+        position: absolute;
+        right: 18px;
+        bottom: 18px;
+        z-index: 10;
+        border-radius: 12px;
+        padding: 0 12px;
+        height: 24px;
+        font-size: 10px;
+        line-height: 24px;
+        color: #fff;
+        background-color: rgb(0, 160, 220);
+        box-sizing: border-box;
+        transition: all .2s;
+        opacity: 1;
+
+        &.fade-enter,
+        &.fade-leave-active {
+          opacity: 0;
+        }
+      }
     }
 
-    .cartcontrol-wrapper {
-      position: absolute;
-      right: 12px;
-      bottom: 12px;
-    }
+    .info {
+      padding: 18px;
 
-    .buy {
-      position: absolute;
-      right: 18px;
-      bottom: 18px;
-      z-index: 10;
-      border-radius: 12px;
-      padding: 0 12px;
-      height: 24px;
-      font-size: 10px;
-      line-height: 24px;
-      color: #fff;
-      background-color: rgb(0, 160, 220);
-      box-sizing: border-box;
-      transition: all .2s;
-      opacity: 1;
+      .title {
+        margin-bottom: 6px;
+        font-size: 14px;
+        line-height: 16px;
+        color: rgb(7, 17, 27);
+      }
 
-      &.fade-enter,
-      &.fade-leave-active {
-        opacity: 0;
+      .text {
+        font-size: 12px;
+        line-height: 24px;
+        color: rgb(77, 85, 93);
       }
     }
   }
