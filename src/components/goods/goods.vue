@@ -125,7 +125,7 @@
           click: true
         });
         this.foodsScroll = new BScroll(this.$refs.foods, {
-          probeType: 3,
+          probeType: 3, // 派发scroll事件
           click: true
         });
 

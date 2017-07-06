@@ -232,6 +232,8 @@
 
     .content {
       display: flex;
+      position: relative;
+      z-index: 201;
       color: rgba(255, 255, 255, .4);
       background-color: #141d27;
 
@@ -251,6 +253,10 @@
           box-sizing: border-box;
           vertical-align: top;
           background-color: #141d27;
+
+          @media only screen and (max-width: 320px) {
+            margin-right: 0;
+          }
 
           .logo {
             width: 100%;
@@ -302,6 +308,12 @@
           line-height: 24px;
           box-sizing: border-box;
 
+          @media only screen and (max-width: 320px) {
+            overflow: hidden;
+            padding-right: 4px;
+            max-width: 48px;
+          }
+
           &.highlight {
             color: #fff;
           }
@@ -315,6 +327,9 @@
           line-height: 20px;
           vertical-align: top;
 
+          @media only screen and (max-width: 320px) {
+            margin-left: 3px;
+          }
         }
       }
 
