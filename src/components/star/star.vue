@@ -62,7 +62,7 @@
         width: 20px;
         height: 20px;
         background-size: 20px;
-        &.last-child {
+        &:last-child {
           margin-right: 0;
         }
         &.on {
@@ -83,7 +83,7 @@
         width: 15px;
         height: 15px;
         background-size: 15px;
-        &.last-child {
+        &:last-child {
           margin-right: 0;
         }
         &.on {
@@ -104,7 +104,7 @@
         width: 10px;
         height: 10px;
         background-size: 10px;
-        &.last-child {
+        &:last-child {
           margin-right: 0;
         }
         &.on {

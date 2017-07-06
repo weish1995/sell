@@ -1,5 +1,5 @@
 <template>
-  <div class="ratings" ref="rating">
+  <div class="rating" ref="rating">
     <div class="ratings-content">
       <div class="overview">
         <div class="overview-left">
@@ -29,7 +29,7 @@
                       :ratings="ratings" @ratingtype="typeChange" @ratingOnly="onlyChange"></v-ratingselect>
       <div class="rating-wrapper">
         <ul>
-          <li v-show="needShow(rating.rateType, rating.text)" v-for="rating in ratings" class="rating-item">
+          <li v-if="needShow(rating.rateType, rating.text)" v-for="rating in ratings" class="rating-item">
             <div class="avatar">
               <img width="28" height="28" :src="rating.avatar"/>
             </div>
@@ -98,11 +98,9 @@
         if (this.onlyContent && !text) {
           return false;
         }
-
         if (this.selectType === ALL) {
           return true;
         }
-
         return type === this.selectType;
       }
     },
@@ -130,7 +128,7 @@
 <style lang="less" rel="stylesheet/less">
   @import "../../common/styles/mixin";
 
-  .ratings {
+  .rating {
     overflow: hidden;
     position: absolute;
     top: 174px;
@@ -232,6 +230,10 @@
         display: flex;
         padding: 18px 0;
         .border-1px(rgba(7, 17, 27, .1));
+
+        &:last-child:after {
+          border-top: 0;
+        }
 
         .avatar {
           margin-right: 12px;
