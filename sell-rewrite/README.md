@@ -1,6 +1,6 @@
 # sell-rewrite
 
-> sell app rewrite
+> app sell rewrite
 
 ## Build Setup
 
