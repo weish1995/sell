@@ -30,23 +30,23 @@
     <transition name="slide">
       <div class="popup" v-show="popupShow" ref="popup">
         <div class="popup-content">
-            <h2 class="title">{{ seller.name }}</h2>
-            <div class="star-wrapper">
-              <v-star class="score" :size="'lg'" :score="seller.score"></v-star>
-            </div>
-            <v-info-title text="优惠信息"></v-info-title>
-            <ul class="supports-wrapper">
-              <li class="supports-item" v-for="item in seller.supports">
-                <i class="icon" :class="supportsMap[item.type]"></i>
-                <span class="text">{{ item.description }}</span>
-              </li>
-            </ul>
-            <v-info-title text="商家公告"></v-info-title>
-            <p class="bulletin-content">{{ seller.bulletin }}</p>
-            <div class="close">
-              <i class="icon-close" @click="hide($event)"></i>
-            </div>
+          <h2 class="title">{{ seller.name }}</h2>
+          <div class="star-wrapper">
+            <v-star class="score" :size="'lg'" :score="seller.score"></v-star>
           </div>
+          <v-info-title text="优惠信息"></v-info-title>
+          <ul class="supports-wrapper">
+            <li class="supports-item" v-for="item in seller.supports">
+              <i class="icon" :class="supportsMap[item.type]"></i>
+              <span class="text">{{ item.description }}</span>
+            </li>
+          </ul>
+          <v-info-title text="商家公告"></v-info-title>
+          <p class="bulletin-content">{{ seller.bulletin }}</p>
+          <div class="close">
+            <i class="icon-close" @click="hide($event)"></i>
+          </div>
+        </div>
       </div>
     </transition>
   </header>
@@ -73,15 +73,6 @@
       'v-info-title': infoTitle
     },
     created() {
-      this.$nextTick(() => {
-        if (!this.popup) {
-          this.popup = new BScroll(this.$refs.popup, {
-            'click': true
-          });
-        } else {
-          this.popup.refresh();
-        }
-      });
       this.supportsMap = ['decrease', 'discount', 'guarantee', 'invoice', 'special'];
     },
     methods: {
@@ -93,6 +84,16 @@
       },
       show() {
         this.popupShow = true;
+
+        this.$nextTick(() => {
+          if (!this.popup) {
+            this.popup = new BScroll(this.$refs.popup, {
+              'click': true
+            });
+          } else {
+            this.popup.refresh();
+          }
+        });
       }
     }
   };
