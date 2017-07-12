@@ -13,11 +13,31 @@
     <div class="settlement" :class="{'active':seller.minPrice-totalMoney<=0}">
       <span class="total">{{ totalInfo }}</span>
     </div>
+    <div class="drop-balls">
+      <transition name="animate" v-for="(ball, index) in balls" :key="index" @before-enter="beforeEnter" @enter="enter"
+                  @after-enter="afterEnter">
+        <div class="ball-wrapper" v-show="ball.show">
+          <div class="ball"></div>
+        </div>
+      </transition>
+    </div>
   </footer>
 </template>
 
 <script type="text/ecmascript-6">
   export default{
+    data() {
+      return {
+        balls: [
+          {show: false},
+          {show: false},
+          {show: false},
+          {show: false},
+          {show: false}
+        ],
+        dropBalls: []
+      };
+    },
     props: {
       selectFoods: {
         type: Array,
@@ -48,16 +68,62 @@
       },
       totalInfo() {
         if (!this.selectFoods || this.selectFoods.length === 0) {
-          return '￥' + this.seller.minPrice + '起送';
+          return `￥${this.seller.minPrice}起送`;
         }
 
         let diff = this.seller.minPrice - this.totalMoney;
 
         if (diff > 0) {
-          return '还差￥' + diff + '元起送';
+          return `还差￥${diff}元起送`;
         }
 
         return '去结算';
+      }
+    },
+    methods: {
+      getElement(el) {
+        for (let i = 0; i < this.balls.length; i++) {
+          if (!this.balls[i].show) {
+            this.balls[i].show = true;
+            this.balls[i].el = el;
+            this.dropBalls.push(this.balls[i]);
+            return;
+          }
+        }
+      },
+      beforeEnter(el) {
+        let len = this.balls.length;
+        while (len--) {
+          let dBall = this.balls[len];
+          if (dBall.show) {
+            let rect = dBall.el.getBoundingClientRect();
+            let x = rect.left - 28;
+            let y = -(window.innerHeight - rect.top - 56);
+            el.style.transform = `translate3d(0, ${y}px, 0)`;
+            let inner = el.getElementsByClassName('ball')[0];
+            inner.style.transform = `translate3d(${x}px, 0, 0)`;
+          }
+        }
+      },
+      enter(el, done) {
+        /* !important 触发浏览器重绘 */
+        let rf = el.offsetHeight;
+        this.$nextTick(() => {
+          el.style.transform = 'translate3d(0, 0, 0)';
+          let ballInner = el.getElementsByClassName('ball')[0];
+          ballInner.style.transform = 'translate3d(0, 0, 0)';
+        });
+        /* !important */
+        done();
+      },
+      afterEnter(el) {
+        setTimeout(() => {
+          let ball = this.dropBalls.shift();
+          if (ball) {
+            ball.show = false;
+            el.style.display = 'none';
+          }
+        }, 400);
       }
     }
   };
@@ -178,6 +244,26 @@
         font-weight: 700;
         line-height: 24px;
         color: rgba(255, 255, 255, .4);
+      }
+    }
+
+    .drop-balls {
+      .ball-wrapper {
+        display: inline-block;
+        position: fixed;
+        bottom: 30px;
+        left: 35px;
+        z-index: 200;
+        transition: all .4s cubic-bezier(0.49, -0.29, 0.75, 0.41);
+
+        .ball {
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          background-color: rgb(0, 160, 220);
+          transition: all .4s linear;
+        }
       }
     }
   }

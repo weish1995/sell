@@ -30,14 +30,14 @@
                     <del v-if="food.oldPrice" class="old-price">￥{{ food.oldPrice }}</del>
                   </div>
                 </div>
-                <v-carcontrol class="control" :food="food"></v-carcontrol>
+                <v-carcontrol class="control" :food="food" @cartElement="cartElement"></v-carcontrol>
               </li>
             </ul>
           </section>
         </article>
       </div>
     </div>
-    <v-shopcar :selectFoods="selectFoods" :seller="seller"></v-shopcar>
+    <v-shopcar ref="shopcar" :selectFoods="selectFoods" :seller="seller"></v-shopcar>
   </div>
 </template>
 
@@ -133,6 +133,9 @@
 
         let goodList = this.$refs.content.getElementsByClassName('goods-item');
         this.content.scrollToElement(goodList[index], 300);
+      },
+      cartElement(el) {
+        this.$refs.shopcar.getElement(el);
       }
     },
     created() {
@@ -328,7 +331,7 @@
               .control {
                 position: absolute;
                 right: 0;
-                bottom: 9px;
+                bottom: 4px;
               }
             }
           }
