@@ -17,8 +17,8 @@
             <h3 class="title">{{ item.name }}</h3>
             <ul class="item-wrapper">
               <li class="food-item" v-for="food in item.foods">
-                <img class="food-image" :src="food.image" width="57" height="57">
-                <div class="food-wrapper">
+                <img class="food-image" :src="food.image" width="57" height="57" @click="toggleFood(food, $event)">
+                <div class="food-wrapper" @click="toggleFood(food, $event)">
                   <h4 class="name">{{ food.name }}</h4>
                   <p v-if="food.description" class="description">{{ food.description }}</p>
                   <div class="sell-info">
@@ -38,6 +38,7 @@
       </div>
     </div>
     <v-shopcar ref="shopcar" :selectFoods="selectFoods" :seller="seller"></v-shopcar>
+    <v-food :food="selFood" ref="selFood" @food:add="cartElement"></v-food>
   </div>
 </template>
 
@@ -45,6 +46,7 @@
   import BScroll from 'better-scroll';
   import shopcar from 'components/shopcar/shopcar';
   import carcontrol from 'components/carcontrol/carcontrol';
+  import food from 'components/food/food';
 
   const ERR_OK = 0;
 
@@ -58,12 +60,15 @@
       return {
         goods: [],
         scrollY: 0,
-        goodListHeight: []
+        goodListHeight: [],
+        foodShow: false,
+        selFood: {}
       };
     },
     components: {
       'v-shopcar': shopcar,
-      'v-carcontrol': carcontrol
+      'v-carcontrol': carcontrol,
+      'v-food': food
     },
     computed: {
       currentIndex() {
@@ -136,6 +141,15 @@
       },
       cartElement(el) {
         this.$refs.shopcar.getElement(el);
+      },
+      toggleFood(food, event) {
+        if (!event._constructed) {
+          return;
+        }
+
+        this.foodShow = true;
+        this.selFood = food;
+        this.$refs.selFood.show();
       }
     },
     created() {
@@ -280,7 +294,7 @@
                 flex: 1;
                 padding-left: 10px;
                 font-size: 10px;
-                line-height: 10px;
+                line-height: 1em;
                 color: rgb(147, 153, 159);
 
                 .name {
