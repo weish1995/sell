@@ -134,6 +134,7 @@
             el.style.transform = `translate3d(0, ${y}px, 0)`;
             let inner = el.getElementsByClassName('ball')[0];
             inner.style.transform = `translate3d(${x}px, 0, 0)`;
+            break;
           }
         }
       },
