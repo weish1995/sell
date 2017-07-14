@@ -346,6 +346,10 @@
                 position: absolute;
                 right: 0;
                 bottom: 4px;
+
+                @media screen and (max-width: 374px) {
+                  right: -px;
+                }
               }
             }
           }

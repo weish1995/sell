@@ -11,11 +11,12 @@
         <span class="total-money">￥{{ totalMoney }}</span>
         <span class="delivery">另需￥{{ seller.deliveryPrice }}元配送费</span>
       </div>
-      <div class="settlement" :class="{'active':seller.minPrice-totalMoney<=0}">
+      <div class="settlement" @click="pay" :class="{'active':seller.minPrice-totalMoney<=0}">
         <span class="total">{{ totalInfo }}</span>
       </div>
       <div class="drop-balls">
-        <transition name="animate" v-for="(ball, index) in balls" :key="index" @before-enter="beforeEnter" @enter="enter"
+        <transition name="animate" v-for="(ball, index) in balls" :key="index" @before-enter="beforeEnter"
+                    @enter="enter"
                     @after-enter="afterEnter">
           <div class="ball-wrapper" v-show="ball.show">
             <div class="ball"></div>
@@ -182,6 +183,12 @@
         this.selectFoods.forEach((item) => {
           Vue.set(item, 'count', 0);
         });
+      },
+      pay() {
+        if (this.totalMoney < this.seller.minPrice) {
+          return;
+        }
+        alert(`您需要支付￥${this.totalMoney}元`);
       }
     },
     watch: {

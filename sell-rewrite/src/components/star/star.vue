@@ -33,6 +33,10 @@
           result.push('on');
         }
 
+        if (onCount >= this.count) {
+          return result;
+        }
+
         result.push(halfSign);
         for (let i = onCount + 1; i < this.count; i++) {
           result.push('off');

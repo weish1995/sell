@@ -13,7 +13,7 @@
       </li>
     </ul>
     <keep-alive>
-      <router-view :seller="seller"></router-view>
+      <router-view class="content" :seller="seller"></router-view>
     </keep-alive>
   </div>
 </template>
@@ -48,25 +48,31 @@
   @import "commons/style/base";
   @import "commons/style/icon";
 
-  .navbar {
-    display: flex;
-    .border-bottom-1px(rgba(7, 17, 27, .1));
+  .app {
+    .navbar {
+      display: flex;
+      .border-bottom-1px(rgba(7, 17, 27, .1));
 
-    .navbar-item {
-      flex: 1;
-      a {
-        display: block;
-        width: 100%;
-        height: 40px;
-        font-size: 14px;
-        text-align: center;
-        line-height: 40px;
-        color: rgb(77, 85, 93);
+      .navbar-item {
+        flex: 1;
+        a {
+          display: block;
+          width: 100%;
+          height: 40px;
+          font-size: 14px;
+          text-align: center;
+          line-height: 40px;
+          color: rgb(77, 85, 93);
 
-        &.active {
-          color: rgb(240, 20, 20);
+          &.active {
+            color: rgb(240, 20, 20);
+          }
         }
       }
+    }
+
+    & > .content {
+      min-width: 320px;
     }
   }
 </style>
