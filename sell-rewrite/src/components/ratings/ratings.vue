@@ -121,7 +121,7 @@
         return false;
       }
     },
-    created() {
+    activated() {
       this.$http.get('/api/ratings').then((response) => {
         response = response.body;
         if (response.errno === ERR_OK) {

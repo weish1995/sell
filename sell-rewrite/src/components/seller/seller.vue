@@ -87,7 +87,7 @@
         this.favorite = !this.favorite;
       }
     },
-    created() {
+    activated() {
       this.$nextTick(() => {
         if (!this.sellerScroll) {
           this.sellerScroll = new BScroll(this.$refs.sellersc, {
@@ -96,23 +96,22 @@
         } else {
           this.sellerScroll.refresh();
         }
+
+        if (this.seller.pics) {
+          let picContent = document.getElementsByClassName('pic-content')[0];
+          picContent.style.width = (this.seller.pics.length * 126 - 6) + 'px';
+
+          if (!this.pics) {
+            this.pics = new BScroll(this.$refs.pics, {
+              'scrollX': true
+            });
+          } else {
+            this.pics.refresh();
+          }
+        }
       });
 
       this.supportsMap = ['decrease', 'discount', 'guarantee', 'invoice', 'special'];
-    },
-    mounted() {
-      if (this.seller.pics) {
-        let picContent = document.getElementsByClassName('pic-content')[0];
-        picContent.style.width = (this.seller.pics.length * 126 - 6) + 'px';
-
-        if (!this.pics) {
-          this.pics = new BScroll(this.$refs.pics, {
-            'scrollX': true
-          });
-        } else {
-          this.pics.refresh();
-        }
-      }
     }
   };
 </script>
