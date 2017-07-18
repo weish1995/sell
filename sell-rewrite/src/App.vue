@@ -12,9 +12,11 @@
         <router-link to="/seller">商家</router-link>
       </li>
     </ul>
-    <keep-alive>
-      <router-view class="content" :seller="seller"></router-view>
-    </keep-alive>
+    <transition name="cont">
+      <keep-alive>
+        <router-view class="content" :seller="seller"></router-view>
+      </keep-alive>
+    </transition>
   </div>
 </template>
 
@@ -73,6 +75,13 @@
 
     & > .content {
       min-width: 320px;
+      opacity: 1;
+      transition: all .4s;
+
+      &.cont-enter,
+      &.cont-leave-to {
+        opacity: 0;
+      }
     }
   }
 </style>

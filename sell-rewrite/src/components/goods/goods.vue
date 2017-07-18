@@ -152,7 +152,7 @@
         this.$refs.selFood.show();
       }
     },
-    activated() {
+    created() {
       this.$http.get('/api/goods').then((response) => {
         response = response.body;
         if (response.errno === ERR_OK) {
