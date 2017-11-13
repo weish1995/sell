@@ -350,7 +350,7 @@
       right: 0;
       bottom: 48px;
       left: 0;
-      z-index: 20;
+      z-index: 99;
       background-color: rgba(7, 17, 27, .6);
       backdrop-filter: blur(10px);
     }
